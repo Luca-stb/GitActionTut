@@ -1,5 +1,6 @@
 name: Integration
 
+# On [REQUEST] DO that
 on:
   push:
     branches: [main]
@@ -7,7 +8,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  build: # BUILD the project
     runs-on: ubuntu-latest
 
     strategy:
@@ -24,20 +25,22 @@ jobs:
           cache: 'npm'
       - run: npm i
       - run: npm run build
-  unit-tests:
+  
+  unit-tests: # RUN TESTS
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x] # node versions: all steps will be done for all the versions here
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
+    
+    # STEPS to do the job correctly:
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2 # go to actions repository and uses checkout@v2 to check in my repo
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v2 # go to actions repository and use setup-node@v2, @v2 is the version
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm i
-      - run: npm run test
+          node-version: ${{ matrix.node-version }} # lookup to strategy for the requested node versions
+          cache: 'npm' # manage packaging
+      - run: npm i # nmp install
+      - run: npm run test # run the test
